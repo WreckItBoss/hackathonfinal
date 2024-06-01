@@ -1,0 +1,131 @@
+<!-- <!-- <div class="thread-section">
+  <h2>Node.jsとMongoDBで掲示板</h2>
+</div> 
+
+<form action="/" method="POST" class="form-section">
+  <div class="form-group">
+    <label for="inputTitle">タイトル</label>
+    <input type="text" id="inputTitle" name="title" placeholder="タイトル" required />
+  </div>
+  
+  <div class="form-group">
+    <label for="inputContent">内容</label>
+    <textarea id="inputContent" name="content" rows="10" cols="30" placeholder="内容" required></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="inputDueDate">期限</label>
+    <input type="datetime-local" id="inputDueDate" name="dueday"/>
+  </div>
+
+  <div class="form-group">
+    <label for="taskType">タスクの種類</label>
+    <select id="taskType" name="taskType" required>
+      <option value="study">勉強</option>
+      <option value="activity">活動</option>
+      <option value="housework">家事</option>
+    </select>
+  </div>
+
+  <button id="submitButton" type="submit" class="btn btn-primary">送信</button>
+</form>
+
+<ul class="admin-posts">
+  <% data.forEach(post => { %>
+    <li>
+      <a href="/<%= post._id %>">
+        <%= post.title %> &nearr;
+      </a>
+      <div class="admin-post-controls">
+        <form action="/<%= post._id %>?_method=DELETE" method="POST">
+          <input type="submit" value="Delete" class="btn btn-delete">
+        </form>
+      </div>
+    </li>
+  <% }) %>
+</ul>
+
+<div class="task-section">
+  <h3>Tasks</h3>
+  <ul class="task-list">
+    <% tasks.forEach(task => { %>
+      <li>
+        <div>
+          <p>Task Type: <%= task.taskType %></p>
+          <p>Due Date: <%= task.dueDate.toDateString() %></p>
+          <img src="<%= task.flowerImages %>" alt="<%= task.status %> flower">
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+</div>
+
+Include the external JavaScript file 
+<script src="/js/taskUpdater.js"></script> -->
+
+<div class="thread-section">
+  <h2>Node.jsとMongoDBで掲示板</h2>
+</div> 
+
+<form id="taskForm" action="/" method="POST" class="form-section">
+  <div class="form-group">
+    <label for="inputTitle">タイトル</label>
+    <input type="text" id="inputTitle" name="title" placeholder="タイトル" required />
+  </div>
+  
+  <div class="form-group">
+    <label for="inputContent">内容</label>
+    <textarea id="inputContent" name="content" rows="10" cols="30" placeholder="内容" required></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="inputDueDate">期限</label>
+    <input type="datetime-local" id="inputDueDate" name="dueday" required />
+  </div>
+
+  <div class="form-group">
+    <label for="taskType">タスクの種類</label>
+    <select id="taskType" name="taskType" required>
+      <option value="study">勉強</option>
+      <option value="activity">活動</option>
+      <option value="housework">家事</option>
+    </select>
+  </div>
+
+  <button id="submitButton" type="submit" class="btn btn-primary">送信</button>
+</form>
+
+<ul class="admin-posts">
+  <% data.forEach(post => { %>
+    <li>
+      <a href="/<%= post._id %>">
+        <%= post.title %> &nearr;
+      </a>
+      <div class="admin-post-controls">
+        <form action="/<%= post._id %>?_method=DELETE" method="POST">
+          <input type="submit" value="Delete" class="btn btn-delete">
+        </form>
+      </div>
+    </li>
+  <% }) %>
+</ul>
+
+<div class="task-section">
+  <h3>Tasks</h3>
+  <ul class="task-list">
+    <% tasks.forEach(task => { %>
+      <li data-id="<%= task._id %>">
+        <div>
+          <p>Task Type: <%= task.taskType %></p>
+          <p>Due Date: <%= task.dueDate.toDateString() %></p>
+          <img src="<%= task.flowerImages %>" alt="<%= task.status %> flower">
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+</div>
+
+<!-- Include the external JavaScript files -->
+<script src="/js/taskUpdater.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketHandler.js"></script>

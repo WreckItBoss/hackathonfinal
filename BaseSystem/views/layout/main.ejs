@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task管理アプリ</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <!-- 掲示板のひな型作成 -->
+    <div class="board-section">
+        <main class="main">
+            <%- body %>
+        </main>
+    </div>
+    <!-- Include the external JavaScript files -->
+<script src="/js/taskUpdater.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketHandler.js"></script>
+  </body>
+</html>
