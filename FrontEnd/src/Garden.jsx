@@ -133,9 +133,9 @@ const Content = styled.div`
 
 const FlowerImage = styled.img`
   position: absolute;
-  top: ${({ index }) => 200+ Math.floor(index / 4) * 200}px; /* Adjust top position based on index */
-  left: ${({ index }) => 250 + (index % 4) * 180}px; /* Adjust left position based on index */
-  width: 100px;
-  height: 100px;
+  top: ${({ index }) => 150+ Math.floor(index / 4) * 200}px; /* Adjust top position based on index */
+  left: ${({ index }) => 230 + (index % 4) * 180}px; /* Adjust left position based on index */
+  width: 150px;
+  height: 150px;
 `;
 export default Garden;
