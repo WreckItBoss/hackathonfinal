@@ -3,7 +3,8 @@ import { Button, Stack, Modal, Box, TextField, FormControl, InputLabel, Select, 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import flowerShopBackground from './flower_shop.jpg'; // 新しい画像ファイルのパスを指定
+import axios from 'axios';
+import flowerShopBackground from './flower_shop.jpg';
 
 const style = {
   position: 'absolute',
@@ -21,10 +22,35 @@ function FlowerShop() {
   const [open, setOpen] = useState(false);
   const [flower, setFlower] = useState('');
   const [color, setColor] = useState('');
-  const [dateTime, setDateTime] = useState(null);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [duetime, setDueTime] = useState(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleSubmit = async () => {
+    if (!title || !description || !duetime || !flower || !color) {
+      alert('入力していない項目があります');
+      return;
+    }
+
+    try {
+      await axios.post('/api/v1/task', {
+        title,
+        description,
+        dueDate: new Date(duetime),
+        flower,
+        color,
+        flowerImages: 'tulip',
+      });
+      alert('タスクを作成しました');
+      handleClose();
+    } catch (error) {
+      console.error('Error creating task:', error);
+      alert('タスクの作成に失敗しました');
+    }
+  };
 
   return (
     <div style={{ 
@@ -45,16 +71,30 @@ function FlowerShop() {
       >
         <Box sx={style}>
           <h2 id="modal-title">タスク作成</h2>
-          <TextField fullWidth label="タスク名" variant="standard" sx={{ mb: 2 }} />
+          <TextField 
+            fullWidth 
+            label="タスク名" 
+            variant="standard" 
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            sx={{ mb: 2 }} 
+          />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
               label="期限"
-              value={dateTime}
-              onChange={(newValue) => setDateTime(newValue)}
+              value={duetime}
+              onChange={(newValue) => setDueTime(newValue)}
               renderInput={(params) => <TextField {...params} fullWidth sx={{ mb: 2 }} />}
             />
           </LocalizationProvider>
-          <TextField fullWidth label="コメント" variant="standard" sx={{ mb: 2 }} />
+          <TextField 
+            fullWidth 
+            label="コメント" 
+            variant="standard"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            sx={{ mb: 2 }} 
+          />
           <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
             <InputLabel id="flower-label">花の名前</InputLabel>
             <Select
@@ -90,7 +130,7 @@ function FlowerShop() {
             </Select>
           </FormControl>
           <Stack spacing={2} direction="row" justifyContent="center">
-            <Button variant="contained" onClick={handleClose}>タスク作成</Button>
+            <Button variant="contained" onClick={handleSubmit}>タスク作成</Button>
           </Stack>
         </Box>
       </Modal>
