@@ -46,19 +46,24 @@ const Garden = () => {
 
   const checkFlowerCondition = (task) => {
     const BloomingTime = 0.5;
-    const HalfBloomingTime = 0.33;
-
+  
     const dueDate = new Date(task.dueDate);
     const createdAt = new Date(task.createdAt); // 修正: タスクの作成日を取得
     const now = new Date();
-
-    const diffTime = Math.abs(dueDate - createdAt); // 修正: タスクの作成日から期限までの時間
-    const limitTime = Math.abs(dueDate - now); // 修正: 現在から期限までの時間
-    console.log(limitTime / diffTime);
-    if (limitTime / diffTime > BloomingTime) {
+  
+    const diffTime = (dueDate - createdAt); // 修正: タスクの作成日から期限までの時間
+    const limitTime = (dueDate - now); // 修正: 現在から期限までの時間
+    const timeRatio = limitTime / diffTime;
+  
+    console.log(timeRatio);
+  
+    if (timeRatio > 1.0) {
+      console.log('Tulip_Withered');
+      return Tulip_Withered;
+    } else if (timeRatio >= BloomingTime && timeRatio <= 1.0) {
       console.log('Tulip_Blooming');
       return Tulip_Blooming;
-    } else if (limitTime / diffTime < BloomingTime && limitTime / diffTime > HalfBloomingTime) {
+    } else if (timeRatio < BloomingTime && timeRatio > 0) {
       console.log('Tulip_Half_Blooming');
       return Tulip_Half_Blooming;
     } else {
