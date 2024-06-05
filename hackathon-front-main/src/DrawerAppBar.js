@@ -14,7 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 const navItems = [
@@ -26,9 +26,14 @@ const navItems = [
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
   };
 
   const drawer = (
@@ -51,11 +56,11 @@ function DrawerAppBar(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{ bgcolor: '#ffffff' }}> {/* AppBarの色を設定 */}
         <Toolbar>
           <Box sx={{ display: { xs: 'none', sm: 'block' }, mr: 2 }}>
             {navItems.map((item) => (
-              <Button key={item.text} component={Link} to={item.link} sx={{ color: '#fff' }}>
+              <Button key={item.text} component={Link} to={item.link} sx={{ color: '#a9a9a9' }}>
                 {item.text}
               </Button>
             ))}
@@ -65,7 +70,7 @@ function DrawerAppBar(props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: 'none' }, color: '#a9a9a9' }} // メニューアイコンの色を設定
           >
             <MenuIcon />
           </IconButton>
@@ -74,6 +79,8 @@ function DrawerAppBar(props) {
             color="inherit"
             aria-label="account"
             edge="end"
+            onClick={handleProfileClick} // プロフィール画面に遷移
+            sx={{ color: '#a9a9a9' }} // アカウントアイコンの色を設定
           >
             <AccountCircle />
           </IconButton>

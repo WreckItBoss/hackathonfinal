@@ -5,6 +5,7 @@ import DrawerAppBar from './DrawerAppBar';
 import FlowerShop from './FlowerShop';
 import Garden from './Garden';
 import Bouquet from './Bouquet';
+import Profile from './Profile'; // プロフィール画面をインポート
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/flower-shop" element={<FlowerShop />} />
                 <Route path="/garden" element={<Garden />} />
                 <Route path="/bouquet" element={<Bouquet />} />
+                <Route path="/profile" element={<Profile />} /> {/* プロフィール画面 */}
                 <Route path="/" element={<Navigate to="/flower-shop" />} /> {/* Default route after login */}
               </Routes>
             </>
