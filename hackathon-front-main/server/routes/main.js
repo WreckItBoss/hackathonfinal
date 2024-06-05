@@ -25,7 +25,7 @@ router.post('/task', async (req, res) => {
     }
 });
 
-router.delete('/tasks/:id', async (req, res) => {
+router.delete('/task/:id', async (req, res) => {
     try {
         const deleteTask = await Task.findByIdAndDelete(req.params.id);
         res.status(200).json(deleteTask);
