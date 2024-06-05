@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import SignIn from './SignIn';
-import DrawerAppBar from './DrawerAppBar';
-import FlowerShop from './FlowerShop';
-import Garden from './Garden';
-import Bouquet from './Bouquet';
-import Profile from './Profile'; // プロフィール画面をインポート
+import SignIn from './SignIn/SignIn';
+import DrawerAppBar from './DrawerAppBar/DrawerAppBar';
+import FlowerShop from './FlowerShop/FlowerShop';
+import Garden from './Garden/Garden';
+import Bouquet from './Bouquet/Bouquet';
+import Profile from './Profile/Profile'; // プロフィール画面をインポート
 
 function App() {
   return (
