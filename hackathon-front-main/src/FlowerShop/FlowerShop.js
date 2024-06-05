@@ -44,7 +44,7 @@ function FlowerShop() {
         color,
         flowerImages: 'tulip',
       });
-      alert('タスクを作成しました');
+      console.log('タスクを作成しました');
       handleClose();
     } catch (error) {
       console.error('Error creating task:', error);
@@ -61,7 +61,7 @@ function FlowerShop() {
       position: 'relative' 
     }}>
       <Stack spacing={2} direction="row" sx={{ position: 'absolute', top: '65%', left: '67%', transform: 'translate(-50%, -50%)' }}>
-        <Button variant="contained" onClick={handleOpen}>タスクを作成</Button>
+        <Button variant="contained" onClick={handleOpen} sx={{ backgroundColor: '#ffffff', color: '#a9a9a9' }}>タスクを作成</Button>      
       </Stack>
       <Modal
         open={open}
@@ -130,7 +130,7 @@ function FlowerShop() {
             </Select>
           </FormControl>
           <Stack spacing={2} direction="row" justifyContent="center">
-            <Button variant="contained" onClick={handleSubmit}>タスク作成</Button>
+            <Button variant="contained" onClick={handleSubmit} sx={{ backgroundColor: '#ffffff', color: '#a9a9a9' }}>タスク作成</Button>        
           </Stack>
         </Box>
       </Modal>

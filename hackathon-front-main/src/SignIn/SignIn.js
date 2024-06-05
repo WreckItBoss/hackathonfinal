@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Paper, TextField, Typography } from '@mui/material';
-import background from './IMG_7494.JPG'; // 新しい背景画像のパス
+import background from './signup-back.jpg'; // 新しい背景画像のパス
 
 const SignIn = () => {
   const [open, setOpen] = useState(false);
@@ -20,16 +20,16 @@ const SignIn = () => {
 
   return (
     <AppContainer>
-      <Button onClick={handleOpen}>ログイン画面へ</Button>
+      <Button variant="contained" onClick={handleOpen} sx={{ bgcolor: '#ffffff', color: '#a9a9a9' }}>ログイン画面へ</Button>
       <Modal open={open} onClose={handleOpen}>
         <StyledPaper>
           <form className='form' onSubmit={handleSignIn}>
-            <Typography variant={'h5'}>ログイン</Typography>
-            <TextField label="メールアドレス" variant="standard" className="text" />
-            <TextField label="パスワード" variant="standard" className="text" type="password" />
-            <center><Button type="submit" className="login btn">ログイン</Button></center>
-            <center><Button className="signup btn">新規会員登録はこちら</Button></center>
-            <center><Button variant="outlined" onClick={handleOpen}>閉じる</Button></center>
+            <Typography variant={'h5'}>Sign In</Typography>
+            <TextField label="Email address" variant="standard" className="text" />
+            <TextField label="Password" variant="standard" className="text" type="password" />
+            <center><Button type="submit" className="login btn">Sign In</Button></center>
+            <center><Button className="signup btn">register</Button></center>
+            <center><Button variant="outlined" onClick={handleOpen}>close</Button></center>
           </form>
         </StyledPaper>
       </Modal>
@@ -69,10 +69,10 @@ const StyledPaper = styled(Paper)`
     margin: 1.5rem 0;
   }
   .login {
-    background-color: lightseagreen;
+    background-color: #66cdaa;
   }
   .signup {
-    background-color: #06579b;
+    background-color: #008080;
   }
 `;
 
