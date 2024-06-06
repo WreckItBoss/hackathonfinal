@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button, Stack, Modal, Box, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -31,7 +32,7 @@ function FlowerShop() {
 
   const handleSubmit = async () => {
     if (!title || !description || !duetime || !flower || !color) {
-      alert('入力していない項目があります');
+      alert('You have missing input');
       return;
     }
 
@@ -48,7 +49,11 @@ function FlowerShop() {
       handleClose();
     } catch (error) {
       console.error('Error creating task:', error);
-      alert('タスクの作成に失敗しました');
+      if (error.response && error.response.data.message === 'Please complete the tasks you currently have before adding a new one.') {
+        alert('You already have 8 tasks. Let\'s complete one before adding more');
+      } else {
+        alert('タスクの作成に失敗しました');
+      }
     }
   };
 
