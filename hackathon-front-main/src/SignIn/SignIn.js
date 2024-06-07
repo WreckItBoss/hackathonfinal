@@ -2,20 +2,30 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Paper, TextField, Typography } from '@mui/material';
-import background from './signup-back.jpg'; // 新しい背景画像のパス
+import axios from 'axios';
+import background from './signup-back.jpg';
 
 const SignIn = () => {
   const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleOpen = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleSignIn = (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
-    setOpen(false);
-    navigate('/garden'); // ログインボタンでガーデン画面に遷移
+    try {
+      const response = await axios.post('/api/v1/login', { email, password });
+      localStorage.setItem('token', response.data.token);
+      setOpen(false);
+      navigate('/flower-shop');
+    } catch (error) {
+      console.error('Error logging in:', error);
+      alert('Login failed');
+    }
   };
 
   return (
@@ -25,8 +35,8 @@ const SignIn = () => {
         <StyledPaper>
           <form className='form' onSubmit={handleSignIn}>
             <Typography variant={'h5'}>Sign In</Typography>
-            <TextField label="Email address" variant="standard" className="text" />
-            <TextField label="Password" variant="standard" className="text" type="password" />
+            <TextField label="Email address" variant="standard" className="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <TextField label="Password" variant="standard" className="text" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             <center><Button type="submit" className="login btn">Sign In</Button></center>
             <center><Button className="signup btn">register</Button></center>
             <center><Button variant="outlined" onClick={handleOpen}>close</Button></center>
