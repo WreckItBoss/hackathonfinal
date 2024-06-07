@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import background from './bouquet.jpg';
+import styled from '@emotion/styled';
 
 const Bouquet = () => {
   const [bouquetInfo, setBouquetInfo] = useState({});
@@ -86,12 +88,26 @@ const Bouquet = () => {
   
 
   return (
+    <BouquetContainer>
     <div>
       <h1>Bouquet</h1>
       <p>Type: {bouquetInfo.majorityType}</p>
       <p>Condition: {bouquetInfo.bouquetCondition}</p>
     </div>
+    </BouquetContainer>
   );
 };
+
+const BouquetContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-image: url(${background});
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 
 export default Bouquet;
