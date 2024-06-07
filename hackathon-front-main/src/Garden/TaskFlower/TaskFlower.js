@@ -32,7 +32,8 @@ const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
       await axios.put(`/api/v1/task/complete/${task._id}`, {
         flowerStatus,
         taskType: task.taskType,
-        completedAt: new Date()
+        completedAt: new Date(),
+        isCompleted: true,
       });
       console.log('タスクを完了しました');
       refreshTasks();
