@@ -65,7 +65,8 @@ const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
         <Tooltip>
           <p>タイトル：{task.title}</p>
           <p>内容：{task.description}</p>
-          <p>期限：{task.dueDate}</p>
+          {/* <p>期限：{task.dueDate}</p> */}
+          <p>期限：{new Date(task.dueDate).toLocaleDateString()}</p>
           <Button variant="contained" color="primary" onClick={markAsCompleted}>完了</Button>
           <Button variant="contained" color="secondary" onClick={deleteTask}>削除</Button>
         </Tooltip>
