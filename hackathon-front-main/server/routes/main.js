@@ -1,14 +1,15 @@
-
+// server/routes/task.js
 const express = require('express');
 const router = express.Router();
 const Task = require('../models/Task');
+const { protect } = require('../middleware/authMiddleware');
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
-router.get('/tasks', async (req, res) => {
+router.get('/tasks', protect, async (req, res) => {
     try {
-        const tasks = await Task.find({});
+        const tasks = await Task.find({ user: req.user._id });
         res.json(tasks);
     } catch (error) {
         console.error(error.message);
@@ -16,13 +17,13 @@ router.get('/tasks', async (req, res) => {
     }
 });
 
-router.post('/task', async (req, res) => {
+router.post('/task', protect, async (req, res) => {
     try {
-        const taskCount = await Task.countDocuments({ isCompleted: false });
+        const taskCount = await Task.countDocuments({ user: req.user._id, isCompleted: false });
         if (taskCount >= 8) {
             return res.status(400).json({ message: 'Error' });
         }
-        const createTask = await Task.create(req.body);
+        const createTask = await Task.create({ ...req.body, user: req.user._id });
         res.status(201).json(createTask);
     } catch (error) {
         console.error(error.message);
@@ -30,7 +31,7 @@ router.post('/task', async (req, res) => {
     }
 });
 
-router.put('/task/:id', async (req, res) => {
+router.put('/task/:id', protect, async (req, res) => {
     try {
         const updatedTask = await Task.findByIdAndUpdate(
             req.params.id,
@@ -47,7 +48,7 @@ router.put('/task/:id', async (req, res) => {
     }
 });
 
-router.put('/task/complete/:id', async (req, res) => {
+router.put('/task/complete/:id', protect, async (req, res) => {
     try {
         const { flowerStatus, isCompleted } = req.body;
         const updatedTask = await Task.findByIdAndUpdate(
@@ -65,7 +66,7 @@ router.put('/task/complete/:id', async (req, res) => {
     }
 });
 
-router.delete('/task/:id', async (req, res) => {
+router.delete('/task/:id', protect, async (req, res) => {
     try {
         const deleteTask = await Task.findByIdAndDelete(req.params.id);
         res.status(200).json(deleteTask);
@@ -75,7 +76,7 @@ router.delete('/task/:id', async (req, res) => {
     }
 });
 
-router.get('/tasks/completed-this-week', async (req, res) => {
+router.get('/tasks/completed-this-week', protect, async (req, res) => {
     try {
         const now = new Date();
         const dayOfWeek = now.getDay();
@@ -89,6 +90,7 @@ router.get('/tasks/completed-this-week', async (req, res) => {
         nextSunday.setHours(23, 59, 59, 999);
 
         const tasks = await Task.find({
+            user: req.user._id,
             completedAt: {
                 $gte: lastSaturday,
                 $lte: nextSunday,

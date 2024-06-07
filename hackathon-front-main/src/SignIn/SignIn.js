@@ -1,35 +1,59 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { Button, Modal, Paper, TextField, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { Button, Modal, Paper, TextField, Typography } from '@mui/material';
-import background from './signup-back.jpg'; // 新しい背景画像のパス
+import background from './signup-back.jpg';
 
 const SignIn = () => {
   const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleOpen = () => {
-    setOpen((prevOpen) => !prevOpen);
+    setOpen(!open);
+    setError(''); // Clear previous errors when opening modal
   };
 
-  const handleSignIn = (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
-    setOpen(false);
-    navigate('/garden'); // ログインボタンでガーデン画面に遷移
+    try {
+      const response = await axios.post('/api/auth/login', { username, password });
+      localStorage.setItem('token', response.data.token);
+      navigate('/flower-shop');
+    } catch (error) {
+      setError('ログインに失敗しました: ' + (error.response?.data?.error || error.message));
+    }
   };
 
   return (
     <AppContainer>
-      <Button variant="contained" onClick={handleOpen} sx={{ bgcolor: '#ffffff', color: '#a9a9a9' }}>ログイン画面へ</Button>
+      <Button variant="contained" onClick={handleOpen}>ログイン画面へ</Button>
       <Modal open={open} onClose={handleOpen}>
         <StyledPaper>
-          <form className='form' onSubmit={handleSignIn}>
-            <Typography variant={'h5'}>Sign In</Typography>
-            <TextField label="Email address" variant="standard" className="text" />
-            <TextField label="Password" variant="standard" className="text" type="password" />
-            <center><Button type="submit" className="login btn">Sign In</Button></center>
-            <center><Button className="signup btn">register</Button></center>
-            <center><Button variant="outlined" onClick={handleOpen}>close</Button></center>
+          <form className="form" onSubmit={handleSignIn}>
+            <Typography variant="h5">Sign In</Typography>
+            {error && <Typography color="error">{error}</Typography>}
+            <TextField 
+              label="Username" 
+              variant="standard" 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="text" 
+            />
+            <TextField 
+              label="Password" 
+              variant="standard" 
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="text" 
+            />
+            <center>
+              <Button type="submit" className="login btn">Sign In</Button>
+            </center>
           </form>
         </StyledPaper>
       </Modal>
@@ -70,9 +94,6 @@ const StyledPaper = styled(Paper)`
   }
   .login {
     background-color: #66cdaa;
-  }
-  .signup {
-    background-color: #008080;
   }
 `;
 
