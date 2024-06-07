@@ -34,6 +34,9 @@ const Garden = () => {
   };
 
   const checkFlowerCondition = (task) => {
+    if (task.completedAt) {
+      return task.flowerStatus; // Return the current flower status if the task is completed
+    }
     const BloomingTime = 0.5;
 
     const dueDate = new Date(task.dueDate);
