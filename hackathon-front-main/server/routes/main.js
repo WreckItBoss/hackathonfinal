@@ -20,7 +20,7 @@ router.post('/task', async (req, res) => {
     try {
         const taskCount = await Task.countDocuments({ isCompleted: false });
         if (taskCount >= 8) {
-            return res.status(400).json({ message: 'Please complete the tasks you currently have before adding a new one.' });
+            return res.status(400).json({ message: 'Error' });
         }
         const createTask = await Task.create(req.body);
         res.status(201).json(createTask);

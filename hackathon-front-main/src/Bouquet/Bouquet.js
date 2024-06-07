@@ -89,7 +89,7 @@ const Bouquet = () => {
       }
     }
 
-    const bouquetCondition = (completionRatio > 0.75) ? 'Healthy' :
+    const bouquetCondition = (completionRatio >= 0.75) ? 'Healthy' :
                              (completionRatio >= 0.25) ? 'Dying' : 'Dead';
 
     setBouquetInfo({ majorityType, bouquetCondition });

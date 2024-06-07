@@ -197,7 +197,7 @@ function FlowerShop() {
       handleClose();
     } catch (error) {
       console.error('Error creating task:', error);
-      if (error.response && error.response.data.message === 'Please complete the tasks you currently have before adding a new one.') {
+      if (error.response && error.response.data.message === 'Error') {
         alert('You already have 8 tasks. Let\'s complete one before adding more');
       } else {
         alert('タスクの作成に失敗しました');
