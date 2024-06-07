@@ -21,7 +21,9 @@ const Bouquet = () => {
   const fetchCompletedTasks = async () => {
     try {
       const response = await axios.get('/api/v1/tasks/completed-this-week');
-      calculateBouquet(response.data);
+      if (response.data.length > 0){
+        calculateBouquet(response.data);
+      }
     } catch (error) {
       console.error('Error fetching completed tasks:', error);
     }
