@@ -2,13 +2,17 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const connectDB = require('./server/config/db');
+const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 connectDB();
 
+app.use(bodyParser.json());
+
 app.use(express.static(path.join(__dirname, 'build')));
 app.use('/api/v1', require('./server/routes/main'));
+app.use('/api/v1/auth', require('./server/routes/auth'));
 
 require('./server/cron'); 
 

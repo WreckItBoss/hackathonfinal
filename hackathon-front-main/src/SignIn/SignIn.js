@@ -25,8 +25,21 @@ const SignIn = () => {
         <StyledPaper>
           <form className='form' onSubmit={handleSignIn}>
             <Typography variant={'h5'}>Sign In</Typography>
-            <TextField label="Email address" variant="standard" className="text" />
-            <TextField label="Password" variant="standard" className="text" type="password" />
+            <TextField 
+              label="Email address" 
+              variant="standard" 
+              className="text" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField 
+              label="Password" 
+              variant="standard" 
+              className="text" 
+              type="password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <center><Button type="submit" className="login btn">Sign In</Button></center>
             <center><Button className="signup btn">register</Button></center>
             <center><Button variant="outlined" onClick={handleOpen}>close</Button></center>
