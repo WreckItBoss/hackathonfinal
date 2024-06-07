@@ -14,6 +14,7 @@ import yellowDead from './bouquetflowers/Yellow/yellowbouquet3.PNG';
 import balancedHealthy from './bouquetflowers/Balanced/balancebouquet1.PNG';
 import balancedDying from './bouquetflowers/Balanced/balancebouquet2.PNG';
 import balancedDead from './bouquetflowers/Balanced/balancebouquet3.PNG';
+import { Button, Stack } from '@mui/material'; // MUIのButtonとStackをインポート
 
 const Bouquet = () => {
   const [bouquetInfo, setBouquetInfo] = useState({});
@@ -148,6 +149,9 @@ const Bouquet = () => {
         <p>Type: {bouquetInfo.majorityType}</p>
         <p>Condition: {bouquetInfo.bouquetCondition}</p>
       </div>
+      <Stack spacing={2} direction="row" sx={{ marginLeft: '300px'}}>
+        <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#a9a9a9'}} >花束を購入する</Button>
+      </Stack>
     </BouquetContainer>
   );
 };
