@@ -1,0 +1,37 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import SignIn from './SignIn/SignIn';
+import DrawerAppBar from './DrawerAppBar/DrawerAppBar';
+import FlowerShop from './FlowerShop/FlowerShop';
+import Garden from './Garden/Garden';
+import Bouquet from './Bouquet/Bouquet';
+import Profile from './Profile/Profile'; // プロフィール画面をインポート
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route
+          path="/*"
+          element={
+            <>
+              <DrawerAppBar />
+              <Routes>
+                <Route path="/flower-shop" element={<FlowerShop />} />
+                <Route path="/garden" element={<Garden />} />
+                <Route path="/bouquet" element={<Bouquet />} />
+                <Route path="/profile" element={<Profile />} /> {/* プロフィール画面 */}
+                <Route path="/" element={<Navigate to="/flower-shop" />} /> {/* Default route after login */}
+              </Routes>
+            </>
+          }
+        />
+        <Route path="/" element={<Navigate to="/sign-in" />} /> {/* 初期ルートをログイン画面にリダイレクト */}
+        <Route path="*" element={<Navigate to="/sign-in" />} /> {/* 未定義ルートもログイン画面にリダイレクト */}
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
