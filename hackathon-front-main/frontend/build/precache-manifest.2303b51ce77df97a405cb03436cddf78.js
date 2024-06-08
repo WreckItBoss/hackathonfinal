@@ -1,5 +1,45 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
+<<<<<<<< HEAD:hackathon-front-main/frontend/build/precache-manifest.07a22f3a12a632eb2c96f3b7dab5f9df.js
+    "revision": "3c0af63ba5dd9e1591911d8a69884d04",
+    "url": "/index.html"
+  },
+  {
+    "revision": "c9277f5efefd0c79d35b",
+    "url": "/static/css/main.5ecd60fb.chunk.css"
+  },
+  {
+    "revision": "31dc25d546f726a488db",
+    "url": "/static/js/2.231e4ace.chunk.js"
+  },
+  {
+    "revision": "e0aeb2e98cdd84f2adce32d4a84e83da",
+    "url": "/static/js/2.231e4ace.chunk.js.LICENSE.txt"
+  },
+  {
+    "revision": "f620773171022eb3a365",
+    "url": "/static/js/3.9935e5c1.chunk.js"
+  },
+  {
+    "revision": "c9277f5efefd0c79d35b",
+    "url": "/static/js/main.25cc1e2b.chunk.js"
+  },
+  {
+    "revision": "07130cdc270eb05cd9cb",
+    "url": "/static/js/runtime-main.32c08a7b.js"
+  },
+  {
+    "revision": "7037eb81b7bbbe49fcc47d45f1cfa2bb",
+    "url": "/static/media/Blooming.7037eb81.png"
+  },
+  {
+    "revision": "7f4aab7c0fe9b708f115e75ceea06fb2",
+    "url": "/static/media/Half-blooming.7f4aab7c.png"
+  },
+  {
+    "revision": "579cf8ea6de39e9411e55339dbe4f670",
+    "url": "/static/media/Withered.579cf8ea.png"
+========
     "revision": "70bb96726ca67d3354bc278bef99ec75",
     "url": "/index.html"
   },
@@ -26,18 +66,19 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "7cac4bf384df88e53139",
     "url": "/static/js/runtime-main.fa6c22e1.js"
+>>>>>>>> origin/develop:hackathon-front-main/frontend/build/precache-manifest.2303b51ce77df97a405cb03436cddf78.js
   },
   {
     "revision": "0711bb0ebe7e71eaea94f39b58e0993b",
     "url": "/static/media/balancebouquet1.0711bb0e.PNG"
   },
   {
-    "revision": "4b6a07a70adedd8250ce4a7600aa42fa",
-    "url": "/static/media/balancebouquet2.4b6a07a7.PNG"
-  },
-  {
     "revision": "344b599a414494c55f0dc1af6f0d0381",
     "url": "/static/media/balancebouquet3.344b599a.PNG"
+  },
+  {
+    "revision": "aa05636303269c18ccac8d2d755e66d2",
+    "url": "/static/media/balancebouquet4.aa056363.PNG"
   },
   {
     "revision": "5d29bd768de59b55d1e69a2615c2cc3d",
