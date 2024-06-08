@@ -4,78 +4,40 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
+const generateToken = (id)  => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: '30d',
+    });
+};
+
+router.post('register', async (req, res) => {
     const { email, password } = req.body;
-
     try {
-        let user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ message: 'ユーザーが既に存在します' });
-        }
-
-        user = new User({
-            email,
-            password,
+        const user = await User.create({ email, password });
+        res.status(201).json({
+            _id: user._id,
+            token: generateToken(user._id),
         });
-
-        await user.save();
-
-        const payload = {
-            user: {
-                id: user.id,
-            },
-        };
-
-        jwt.sign(
-            payload,
-            process.env.JWT_SECRET,
-            { expiresIn: 3600 },
-            (err, token) => {
-                if (err) throw err;
-                res.status(200).json({ token });
-            }
-        );
-    }
-    catch (err) {
-        console.error(err.message);
-        res.status(500).send('サーバーエラー');
+    } catch (error) {
+        res.status(400).json({ message: 'User registration failed' });
     }
 });
-
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-
     try {
-        let user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ message: 'ユーザーが存在しません' });
+        const user = await User.findOne({ email });
+        if (user && (await user.matchPassword(password))) {
+            res.json({
+                _id: user._id,
+                token: generateToken(user._id),
+            });
+        } else {
+            res.status(401).json({ message: 'Invalid email or password' });
         }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'パスワードが間違っています' });
-        }
-
-        const payload = {
-            user: {
-                id: user.id,
-            },
-        };
-
-        jwt.sign(
-            payload,
-            process.env.JWT_SECRET,
-            { expiresIn: 3600 },
-            (err, token) => {
-                if (err) throw err;
-                res.status(200).json({ token });
-            }
-        );
-    }
-    catch (err) {
-        console.error(err.message);
-        res.status(500).send('サーバーエラー');
+    } catch (error) {
+        res.status8(400).json({ message: 'User login failed' });
     }
 });
 
+module.exports = router;
