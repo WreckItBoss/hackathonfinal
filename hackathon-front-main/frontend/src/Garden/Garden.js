@@ -14,6 +14,7 @@ const Garden = () => {
 
   const fetchTasks = async () => {
     const data = await getAllTasks();
+    console.log('Tasks fetched:', data); 
     setTasks(data.filter(task => !task.completedAt)); // Filter out completed tasks
   };
 
@@ -25,13 +26,19 @@ const Garden = () => {
 
   const getAllTasks = async () => {
     try {
-      const response = await axios.get('/api/v1/tasks');
+      const token = localStorage.getItem('token'); // Get the token from localStorage
+      const response = await axios.get('/api/v1/tasks', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       return response.data;
     } catch (error) {
       console.error('Error getting all tasks:', error);
       return [];
     }
   };
+  
 
   const checkFlowerCondition = (task) => {
     if (task.completedAt) {

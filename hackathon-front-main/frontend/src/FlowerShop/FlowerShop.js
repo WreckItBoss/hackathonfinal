@@ -1,4 +1,3 @@
-
 // import React, { useState } from 'react';
 // import { Button, Stack, Modal, Box, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -21,29 +20,32 @@
 
 // function FlowerShop() {
 //   const [open, setOpen] = useState(false);
-//   const [flower, setFlower] = useState('');
-//   const [color, setColor] = useState('');
 //   const [title, setTitle] = useState('');
 //   const [description, setDescription] = useState('');
 //   const [duetime, setDueTime] = useState(null);
+//   const [taskType, setTaskType] = useState('');
 
 //   const handleOpen = () => setOpen(true);
 //   const handleClose = () => setOpen(false);
 
 //   const handleSubmit = async () => {
-//     if (!title || !description || !duetime || !flower || !color) {
+//     if (!title || !description || !duetime || !taskType) {
 //       alert('You have missing input');
 //       return;
 //     }
-
+  
 //     try {
+//       const token = localStorage.getItem('token'); // Get the token from local storage
 //       await axios.post('/api/v1/task', {
 //         title,
 //         description,
 //         dueDate: new Date(duetime),
-//         flower,
-//         color,
-//         flowerImages: 'tulip',
+//         taskType,
+//         isCompleted: false,
+//       }, {
+//         headers: {
+//           'Authorization': `Bearer ${token}`, // Include the token in the request headers
+//         },
 //       });
 //       console.log('タスクを作成しました');
 //       handleClose();
@@ -56,6 +58,7 @@
 //       }
 //     }
 //   };
+  
 
 //   return (
 //     <div style={{ 
@@ -101,37 +104,20 @@
 //             sx={{ mb: 2 }} 
 //           />
 //           <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-//             <InputLabel id="flower-label">花の名前</InputLabel>
+//             <InputLabel id="taskType-label">タスクタイプ</InputLabel>
 //             <Select
-//               labelId="flower-label"
-//               id="flower-select"
-//               value={flower}
-//               onChange={(e) => setFlower(e.target.value)}
-//               label="花の名前"
+//               labelId="taskType-label"
+//               id="taskType-select"
+//               value={taskType}
+//               onChange={(e) => setTaskType(e.target.value)}
+//               label="タスクタイプ"
 //             >
 //               <MenuItem value="">
 //                 <em>None</em>
 //               </MenuItem>
-//               <MenuItem value="tulip">チューリップ</MenuItem>
-//               <MenuItem value="marguerite">マーガレット</MenuItem>
-//               <MenuItem value="rose">バラ</MenuItem>
-//             </Select>
-//           </FormControl>
-//           <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-//             <InputLabel id="color-label">色</InputLabel>
-//             <Select
-//               labelId="color-label"
-//               id="color-select"
-//               value={color}
-//               onChange={(e) => setColor(e.target.value)}
-//               label="色"
-//             >
-//               <MenuItem value="">
-//                 <em>None</em>
-//               </MenuItem>
-//               <MenuItem value="red">赤</MenuItem>
-//               <MenuItem value="blue">青</MenuItem>
-//               <MenuItem value="yellow">黄色</MenuItem>
+//               <MenuItem value="study">勉強</MenuItem>
+//               <MenuItem value="housework">家事</MenuItem>
+//               <MenuItem value="activity">活動</MenuItem>
 //             </Select>
 //           </FormControl>
 //           <Stack spacing={2} direction="row" justifyContent="center">
@@ -145,12 +131,13 @@
 
 // export default FlowerShop;
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Stack, Modal, Box, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import flowerShopBackground from './flower_shop.jpg';
 
 const style = {
@@ -166,20 +153,53 @@ const style = {
 };
 
 function FlowerShop() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
-  const [flower, setFlower] = useState('');
-  const [color, setColor] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [duetime, setDueTime] = useState(null);
   const [taskType, setTaskType] = useState('');
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        console.log('Token being used for fetchUser:', token); // Debugging statement
+        if (!token) {
+          throw new Error('No token found');
+        }
+        const response = await axios.get('/api/v1/user/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user information:', error);
+        if (error.message === 'No token found' || (error.response && error.response.status === 401)) {
+          alert('Session has expired. Please log in again.');
+          localStorage.removeItem('token'); // Remove expired token
+          navigate('/login'); // Redirect to login page
+        }
+      }
+    };
+    
+    fetchUser();
+  }, [navigate]);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleSubmit = async () => {
-    if (!title || !description || !duetime || !flower || !color || !taskType) {
+    if (!title || !description || !duetime || !taskType) {
       alert('You have missing input');
+      return;
+    }
+
+    let token = localStorage.getItem('token');
+    console.log('Token being used for handleSubmit:', token); // Debugging statement
+    if (!token) {
+      alert('User is not logged in. Please log in again.');
+      navigate('/login');
       return;
     }
 
@@ -188,16 +208,50 @@ function FlowerShop() {
         title,
         description,
         dueDate: new Date(duetime),
-        flower,
-        color,
-        flowerImages: 'tulip',
         taskType,
+        isCompleted: false,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
       });
       console.log('タスクを作成しました');
       handleClose();
     } catch (error) {
       console.error('Error creating task:', error);
-      if (error.response && error.response.data.message === 'Error') {
+
+      if (error.response && error.response.status === 401) {
+        // Token expired, try to refresh
+        try {
+          const refreshResponse = await axios.post('/api/auth/refresh-token', {}, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          token = refreshResponse.data.token;
+          localStorage.setItem('token', token); // Update token in local storage
+
+          // Retry the original request with the new token
+          await axios.post('/api/v1/task', {
+            title,
+            description,
+            dueDate: new Date(duetime),
+            taskType,
+            isCompleted: false,
+          }, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          console.log('タスクを作成しました');
+          handleClose();
+        } catch (refreshError) {
+          console.error('Error refreshing token:', refreshError);
+          alert('Session has expired. Please log in again.');
+          localStorage.removeItem('token'); // Remove expired token
+          navigate('/login'); // Redirect to login page
+        }
+      } else if (error.response && error.response.data.message === 'Please complete the tasks you currently have before adding a new one.') {
         alert('You already have 8 tasks. Let\'s complete one before adding more');
       } else {
         alert('タスクの作成に失敗しました');
@@ -248,40 +302,6 @@ function FlowerShop() {
             onChange={(e) => setDescription(e.target.value)}
             sx={{ mb: 2 }} 
           />
-          <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="flower-label">花の名前</InputLabel>
-            <Select
-              labelId="flower-label"
-              id="flower-select"
-              value={flower}
-              onChange={(e) => setFlower(e.target.value)}
-              label="花の名前"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="tulip">チューリップ</MenuItem>
-              <MenuItem value="marguerite">マーガレット</MenuItem>
-              <MenuItem value="rose">バラ</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="color-label">色</InputLabel>
-            <Select
-              labelId="color-label"
-              id="color-select"
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-              label="色"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="red">赤</MenuItem>
-              <MenuItem value="blue">青</MenuItem>
-              <MenuItem value="yellow">黄色</MenuItem>
-            </Select>
-          </FormControl>
           <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
             <InputLabel id="taskType-label">タスクタイプ</InputLabel>
             <Select
