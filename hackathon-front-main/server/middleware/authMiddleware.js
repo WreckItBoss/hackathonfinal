@@ -1,0 +1,25 @@
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+require('dotenv').config();
+
+const protect = async (req, res, next) => {
+    let token;
+
+    if (req.heders.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = await User.findById(decoded.id).select('-password');
+            next();
+        }
+        catch (err) {
+            console.error(err.message);
+            res.status(401).json({ message: 'トークンが無効です' });
+        }
+    }
+    if (!token) {
+        return res.status(401).json({ message: 'トークンがありません' });
+    }
+};
+
+module.exports = { protect };

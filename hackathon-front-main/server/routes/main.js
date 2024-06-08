@@ -2,28 +2,30 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('../models/Task');
-//cosnt { protect } = require('../middleware/auth');
+const { protect } = require('../middleware/authMiddleware');
 
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
+router.use('/auth', require('./auth'));
 
-router.get('/tasks', async (req, res) => {
+router.get('/tasks', protect, async (req, res) => {
     try {
-        const tasks = await Task.find({});
+        const tasks = await Task.find({ user: req.user._id});
         res.json(tasks);
+        console.log("承認が成功しました");
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: 'Server Error: Unable to fetch tasks' });
     }
 });
 
-router.post('/task', async (req, res) => {
+router.post('/task', protect, async (req, res) => {
     try {
         const taskCount = await Task.countDocuments({ isCompleted: false });
         if (taskCount >= 8) {
             return res.status(400).json({ message: 'Error' });
         }
-        const createTask = await Task.create(req.body);
+        const createTask = await Task.create({...req.body, user: req.user._id});
         res.status(201).json(createTask);
     } catch (error) {
         console.error(error.message);
@@ -31,7 +33,7 @@ router.post('/task', async (req, res) => {
     }
 });
 
-router.put('/task/:id', async (req, res) => {
+router.put('/task/:id', protect, async (req, res) => {
     try {
         const updatedTask = await Task.findByIdAndUpdate(
             req.params.id,
@@ -48,7 +50,7 @@ router.put('/task/:id', async (req, res) => {
     }
 });
 
-router.put('/task/complete/:id', async (req, res) => {
+router.put('/task/complete/:id', protect, async (req, res) => {
     try {
         const { flowerStatus, isCompleted } = req.body;
         const updatedTask = await Task.findByIdAndUpdate(
@@ -66,7 +68,7 @@ router.put('/task/complete/:id', async (req, res) => {
     }
 });
 
-router.delete('/task/:id', async (req, res) => {
+router.delete('/task/:id', protect, async (req, res) => {
     try {
         const deleteTask = await Task.findByIdAndDelete(req.params.id);
         res.status(200).json(deleteTask);

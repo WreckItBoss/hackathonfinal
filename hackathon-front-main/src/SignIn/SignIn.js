@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Paper, TextField, Typography } from '@mui/material';
-import background from './signup-back.jpg'; // 新しい背景画像のパス
+import background from './signup-back.jpg';
 import axios from 'axios';
 
 const SignIn = () => {
@@ -10,30 +10,44 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState(''); 
+
   const handleOpen = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleSignIn = (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
-    setOpen(false);
-    navigate('/garden'); // ログインボタンでガーデン画面に遷移
+    try {
+      const response = await axios.post('/api/v1/auth/login', {
+        email,
+        password,
+      });
+      localStorage.setItem('token', response.data.token);
+      navigate('/flower-shop');
+    } catch (error) {
+      console.error('Error logging in:', error);
+      alert('サインインに失敗しました');
+    }
   };
 
-  const handleRegiseterSubmit = async () => {
+  const handleRegisterSubmit = async (event) => {
     if (email === '' || password === '') {
       alert('メールアドレスとパスワードを入力してください');
       return;
     }
-
+    event.preventDefault();
+    console.log(email, password);
+    console.log('ユーザ登録開始');
     try {
-      await axios.post('/api/v1/register', {
+      console.log('ユーザ登録中');
+      const response = await axios.post('/api/v1/auth/register', {
         email,
         password,
       });
-
+      console.log('ユーザ登録成功');
+      localStorage.setItem('token', response.data.token);
       console.log('ユーザ登録完了');
-
+      setOpen(false); // Close the modal after successful registration
     } catch (error) {
       console.error('Error creating user:', error);
       if (error.response && error.response.data.message === 'Error') {
@@ -67,9 +81,14 @@ const SignIn = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <center>
-              <Button type="submit" className="login btn">Sign In</Button></center>
-            <center><Button className="signup btn"　onClick={handleRegiseterSubmit}>register</Button></center>
-            <center><Button variant="outlined" onClick={handleOpen}>close</Button></center>
+              <Button type="submit" className="login btn">Sign In</Button>
+            </center>
+            <center>
+              <Button className="signup btn" onClick={handleRegisterSubmit}>Register</Button>
+            </center>
+            <center>
+              <Button variant="outlined" onClick={handleOpen}>Close</Button>
+            </center>
           </form>
         </StyledPaper>
       </Modal>

@@ -9,12 +9,14 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'build')));
-app.use('/api/v1', require('./server/routes/main'));
-app.use('/api/v1', require('./server/routes/auth'));
 
-require('./server/cron'); 
+app.use('/api/v1', require('./server/routes/main'));
+app.use('/api/v1/auth', require('./server/routes/auth'));
+
+require('./server/cron');
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
