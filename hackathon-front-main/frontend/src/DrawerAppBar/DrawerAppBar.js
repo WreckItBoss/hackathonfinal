@@ -60,7 +60,7 @@ function DrawerAppBar(props) {
         <Toolbar>
           <Box sx={{ display: { xs: 'none', sm: 'block' }, mr: 2 }}>
             {navItems.map((item) => (
-              <Button key={item.text} component={Link} to={item.link} sx={{ color: '#a9a9a9' }}>
+              <Button key={item.text} component={Link} to={item.link} sx={{ color: '#5e5e5e' }}>
                 {item.text}
               </Button>
             ))}
@@ -70,7 +70,7 @@ function DrawerAppBar(props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' }, color: '#a9a9a9' }} // メニューアイコンの色を設定
+            sx={{ mr: 2, display: { sm: 'none' }, color: '#5e5e5e' }} // メニューアイコンの色を設定
           >
             <MenuIcon />
           </IconButton>
@@ -80,7 +80,7 @@ function DrawerAppBar(props) {
             aria-label="account"
             edge="end"
             onClick={handleProfileClick} // プロフィール画面に遷移
-            sx={{ color: '#a9a9a9' }} // アカウントアイコンの色を設定
+            sx={{ color: '#5e5e5e' }} // アカウントアイコンの色を設定
           >
             <AccountCircle />
           </IconButton>
