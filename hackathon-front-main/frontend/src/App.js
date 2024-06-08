@@ -6,7 +6,7 @@ import DrawerAppBar from './DrawerAppBar/DrawerAppBar';
 import FlowerShop from './FlowerShop/FlowerShop';
 import Garden from './Garden/Garden';
 import Bouquet from './Bouquet/Bouquet';
-// import Profile from './Profile/Profile';
+import Profile from './Profile/Profile';
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
                 <Route path="/flower-shop" element={<FlowerShop />} />
                 <Route path="/garden" element={<Garden />} />
                 <Route path="/bouquet" element={<Bouquet />} />
-                {/*<Route path="/profile" element={<Profile />} /> */}
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/" element={<Navigate to="/flower-shop" />} /> {/* Default route after login */}
               </Routes>
             </>
