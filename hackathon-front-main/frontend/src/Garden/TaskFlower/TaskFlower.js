@@ -17,6 +17,7 @@ const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const toggleTooltip = () => {
+    console.log('toggleTooltip');
     setTooltipVisible(!tooltipVisible);
   };
 
@@ -83,7 +84,7 @@ const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
       <FlowerImage
         index={index}
         src={getFlowerImage(checkFlowerCondition(task), task.taskType)}
-        alt={task.title}
+        alt={'flower'}
         onClick={toggleTooltip}
       />
       {tooltipVisible && (
@@ -115,7 +116,7 @@ const Tooltip = styled.div`
   visibility: visible;
   width: 200px;
   background-color: white;
-  color: #fff;
+  color: #5e5e5e;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
