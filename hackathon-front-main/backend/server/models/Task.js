@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 // タスク管理のスキーマ
@@ -19,14 +18,6 @@ const TaskSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-    },
-    flower: {
-        type: String,
-        required: true,
-    },
-    color: {
-        type: String,
-        required: true,
     },
     flowerImages: {
         type: String,

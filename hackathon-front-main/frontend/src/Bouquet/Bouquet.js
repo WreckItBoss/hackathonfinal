@@ -12,12 +12,18 @@ import yellowHealthy from './bouquetflowers/Yellow/yellowbouquet1.PNG';
 import yellowDying from './bouquetflowers/Yellow/yellowbouquet2.PNG';
 import yellowDead from './bouquetflowers/Yellow/yellowbouquet3.PNG';
 import balancedHealthy from './bouquetflowers/Balanced/balancebouquet1.PNG';
-import balancedDying from './bouquetflowers/Balanced/balancebouquet3.PNG';
-import balancedDead from './bouquetflowers/Balanced/balancebouquet4.PNG';
-import { Button, Stack } from '@mui/material'; // MUIのButtonとStackをインポート
+import balancedDying from './bouquetflowers/Balanced/balancebouquet2.PNG';
+import balancedDead from './bouquetflowers/Balanced/balancebouquet3.PNG';
+import { Button } from '@mui/material'; // MUIのButtonをインポート
 
 const Bouquet = () => {
   const [bouquetInfo, setBouquetInfo] = useState({});
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  const toggleTooltip = () => {
+    console.log('Tooltip visible:', tooltipVisible);
+    setTooltipVisible(!tooltipVisible);
+  };
 
   const fetchCompletedTasks = async () => {
     try {
@@ -139,22 +145,46 @@ const Bouquet = () => {
   return (
     <BouquetContainer>
       {bouquetInfo.majorityType && bouquetInfo.bouquetCondition && (
-        <BouquetImage
-          src={getBouquetImages(bouquetInfo.majorityType, bouquetInfo.bouquetCondition)}
-          alt="Bouquet"
-        />
+        <FlowerWrapper>
+          <BouquetImage
+            src={getBouquetImages(bouquetInfo.majorityType, bouquetInfo.bouquetCondition)}
+            alt="Bouquet"
+            onClick={toggleTooltip}
+          />
+          {tooltipVisible && (
+            <Tooltip>
+              <p>カテゴリ：{bouquetInfo.majorityType}</p>
+              <p>状態：{bouquetInfo.bouquetCondition}</p>
+              <Button variant="contained" onClick={toggleTooltip}>花を購入する</Button>
+            </Tooltip>
+          )}
+        </FlowerWrapper>
       )}
-      <div>
-        <h1>Bouquet</h1>
-        <p>Type: {bouquetInfo.majorityType}</p>
-        <p>Condition: {bouquetInfo.bouquetCondition}</p>
-      </div>
-      <Stack spacing={2} direction="row" sx={{ marginLeft: '300px'}}>
-        <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#a9a9a9'}} >花束を購入する</Button>
-      </Stack>
     </BouquetContainer>
   );
 };
+
+const FlowerWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+`;
+
+const Tooltip = styled.div`
+  visibility: visible;
+  width: 200px;
+  background-color: white;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 80%; /* Adjust this value to position the tooltip above the image */
+  left: -30%;
+  transform: translateX(-50%);
+  opacity: 1;
+`;
 
 const BouquetContainer = styled.div`
   width: 100vw;
@@ -167,10 +197,13 @@ const BouquetContainer = styled.div`
   align-items: center;
   flex-direction: column;
 `;
+
 const BouquetImage = styled.img`
-  width: 150px;
-  height: 150px;
-  cursor: pointer;
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  margin-left: -200px;
+  margin-top: 100px; 
 `;
 
 export default Bouquet;
