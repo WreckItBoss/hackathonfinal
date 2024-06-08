@@ -1,13 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import background from './garden_back.jpg';
 import axios from 'axios';
 import TaskFlower from './TaskFlower/TaskFlower';
-
-import Tulip_Blooming from './FlowersIMGFile/Tulip/Blooming.png';
-import Tulip_Half_Blooming from './FlowersIMGFile/Tulip/Half-blooming.png';
-import Tulip_Withered from './FlowersIMGFile/Tulip/Withered.png';
 
 const Garden = () => {
   const [tasks, setTasks] = useState([]);
