@@ -20,14 +20,14 @@ const TaskSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    flower: {
-        type: String,
-        required: true,
-    },
-    color: {
-        type: String,
-        required: true,
-    },
+    // flower: {
+    //     type: String,
+    //     required: true,
+    // },
+    // color: {
+    //     type: String,
+    //     required: true,
+    // },
     flowerImages: {
         type: String,
         required: true,

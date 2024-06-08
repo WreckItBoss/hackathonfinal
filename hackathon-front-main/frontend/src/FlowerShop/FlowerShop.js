@@ -167,8 +167,8 @@ const style = {
 
 function FlowerShop() {
   const [open, setOpen] = useState(false);
-  const [flower, setFlower] = useState('');
-  const [color, setColor] = useState('');
+  //const [flower, setFlower] = useState('');
+  //const [color, setColor] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [duetime, setDueTime] = useState(null);
@@ -178,7 +178,7 @@ function FlowerShop() {
   const handleClose = () => setOpen(false);
 
   const handleSubmit = async () => {
-    if (!title || !description || !duetime || !flower || !color || !taskType) {
+    if (!title || !description || !duetime ||/* !flower || !color ||*/ !taskType) {
       alert('You have missing input');
       return;
     }
@@ -188,12 +188,17 @@ function FlowerShop() {
         title,
         description,
         dueDate: new Date(duetime),
-        flower,
-        color,
+        //flower,
+        //color,
         flowerImages: 'tulip',
         taskType,
       });
       console.log('タスクを作成しました');
+      setTitle('');
+      setDescription('');
+      setDueTime();
+      setTaskType('');
+
       handleClose();
     } catch (error) {
       console.error('Error creating task:', error);
@@ -248,7 +253,7 @@ function FlowerShop() {
             onChange={(e) => setDescription(e.target.value)}
             sx={{ mb: 2 }} 
           />
-          <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
+          {/* <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
             <InputLabel id="flower-label">花の名前</InputLabel>
             <Select
               labelId="flower-label"
@@ -281,7 +286,7 @@ function FlowerShop() {
               <MenuItem value="blue">青</MenuItem>
               <MenuItem value="yellow">黄色</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
           <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
             <InputLabel id="taskType-label">タスクタイプ</InputLabel>
             <Select
