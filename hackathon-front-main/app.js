@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'build')));
 app.use('/api/v1', require('./server/routes/main'));
-app.use('/api/v1/auth', require('./server/routes/auth'));
+app.use('/api/v1', require('./server/routes/auth'));
 
 require('./server/cron'); 
 

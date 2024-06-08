@@ -32,15 +32,14 @@ const SignIn = () => {
         password,
       });
 
-      console.log('タスクを作成しました');
-      handleClose();
+      console.log('ユーザ登録完了');
 
     } catch (error) {
-      console.error('Error creating task:', error);
+      console.error('Error creating user:', error);
       if (error.response && error.response.data.message === 'Error') {
         alert('You already have 8 tasks. Let\'s complete one before adding more');
       } else {
-        alert('タスクの作成に失敗しました');
+        alert('ユーザー登録失敗しました');
       }
     }
   };
