@@ -3,11 +3,13 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Paper, TextField, Typography } from '@mui/material';
 import background from './signup-back.jpg'; // 新しい背景画像のパス
+import axios from 'axios';
 
 const SignIn = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); 
   const handleOpen = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -16,6 +18,31 @@ const SignIn = () => {
     event.preventDefault();
     setOpen(false);
     navigate('/garden'); // ログインボタンでガーデン画面に遷移
+  };
+
+  const handleRegiseterSubmit = async () => {
+    if (email === '' || password === '') {
+      alert('メールアドレスとパスワードを入力してください');
+      return;
+    }
+
+    try {
+      await axios.post('/api/v1/register', {
+        email,
+        password,
+      });
+
+      console.log('タスクを作成しました');
+      handleClose();
+
+    } catch (error) {
+      console.error('Error creating task:', error);
+      if (error.response && error.response.data.message === 'Error') {
+        alert('You already have 8 tasks. Let\'s complete one before adding more');
+      } else {
+        alert('タスクの作成に失敗しました');
+      }
+    }
   };
 
   return (
@@ -42,7 +69,7 @@ const SignIn = () => {
             />
             <center>
               <Button type="submit" className="login btn">Sign In</Button></center>
-            <center><Button className="signup btn">register</Button></center>
+            <center><Button className="signup btn"　onClick={handleRegiseterSubmit}>register</Button></center>
             <center><Button variant="outlined" onClick={handleOpen}>close</Button></center>
           </form>
         </StyledPaper>
