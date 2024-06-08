@@ -83,7 +83,7 @@ const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
       <FlowerImage
         index={index}
         src={getFlowerImage(checkFlowerCondition(task), task.taskType)}
-        alt={task.flower}
+        alt={task.title}
         onClick={toggleTooltip}
       />
       {tooltipVisible && (
