@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from '@emotion/styled';
@@ -12,8 +13,8 @@ import yellowHealthy from './bouquetflowers/Yellow/yellowbouquet1.PNG';
 import yellowDying from './bouquetflowers/Yellow/yellowbouquet2.PNG';
 import yellowDead from './bouquetflowers/Yellow/yellowbouquet3.PNG';
 import balancedHealthy from './bouquetflowers/Balanced/balancebouquet1.PNG';
-import balancedDying from './bouquetflowers/Balanced/balancebouquet2.PNG';
-import balancedDead from './bouquetflowers/Balanced/balancebouquet3.PNG';
+import balancedDying from './bouquetflowers/Balanced/balancebouquet3.PNG';
+import balancedDead from './bouquetflowers/Balanced/balancebouquet4.PNG';
 import { Button } from '@mui/material'; // MUIのButtonをインポート
 
 const Bouquet = () => {
@@ -27,8 +28,13 @@ const Bouquet = () => {
 
   const fetchCompletedTasks = async () => {
     try {
-      const response = await axios.get('/api/v1/tasks/completed-this-week');
-      if (response.data.length > 0){
+      const token = localStorage.getItem('token'); // Get the token from localStorage
+      const response = await axios.get('/api/v1/tasks/completed-this-week', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.data.length > 0) {
         calculateBouquet(response.data);
       }
     } catch (error) {

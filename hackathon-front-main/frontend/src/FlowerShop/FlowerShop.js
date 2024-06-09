@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Stack, Modal, Box, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import flowerShopBackground from './flower_shop.jpg';
 
 const style = {
@@ -19,11 +20,38 @@ const style = {
 };
 
 function FlowerShop() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [duetime, setDueTime] = useState(null);
   const [taskType, setTaskType] = useState('');
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        console.log('Token being used for fetchUser:', token); // Debugging statement
+        if (!token) {
+          throw new Error('No token found');
+        }
+        const response = await axios.get('/api/v1/user/profile', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user information:', error);
+        if (error.message === 'No token found' || (error.response && error.response.status === 401)) {
+          alert('Session has expired. Please log in again.');
+          localStorage.removeItem('token'); // Remove expired token
+          navigate('/login'); // Redirect to login page
+        }
+      }
+    };
+    
+    fetchUser();
+  }, [navigate]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,19 +62,63 @@ function FlowerShop() {
       return;
     }
 
+    let token = localStorage.getItem('token');
+    console.log('Token being used for handleSubmit:', token); // Debugging statement
+    if (!token) {
+      alert('User is not logged in. Please log in again.');
+      navigate('/login');
+      return;
+    }
+
     try {
       await axios.post('/api/v1/task', {
         title,
         description,
         dueDate: new Date(duetime),
-        flowerImages: 'tulip',
         taskType,
+        isCompleted: false,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
       });
       console.log('タスクを作成しました');
       handleClose();
     } catch (error) {
       console.error('Error creating task:', error);
-      if (error.response && error.response.data.message === 'Error') {
+
+      if (error.response && error.response.status === 401) {
+        // Token expired, try to refresh
+        try {
+          const refreshResponse = await axios.post('/api/auth/refresh-token', {}, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          token = refreshResponse.data.token;
+          localStorage.setItem('token', token); // Update token in local storage
+
+          // Retry the original request with the new token
+          await axios.post('/api/v1/task', {
+            title,
+            description,
+            dueDate: new Date(duetime),
+            taskType,
+            isCompleted: false,
+          }, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          console.log('タスクを作成しました');
+          handleClose();
+        } catch (refreshError) {
+          console.error('Error refreshing token:', refreshError);
+          alert('Session has expired. Please log in again.');
+          localStorage.removeItem('token'); // Remove expired token
+          navigate('/login'); // Redirect to login page
+        }
+      } else if (error.response && error.response.data.message === 'Please complete the tasks you currently have before adding a new one.') {
         alert('You already have 8 tasks. Let\'s complete one before adding more');
       } else {
         alert('タスクの作成に失敗しました');
@@ -63,7 +135,7 @@ function FlowerShop() {
       position: 'relative' 
     }}>
       <Stack spacing={2} direction="row" sx={{ position: 'absolute', top: '65%', left: '67%', transform: 'translate(-50%, -50%)' }}>
-        <Button variant="contained" onClick={handleOpen} sx={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}>タスクを作成</Button>      
+        <Button variant="contained" onClick={handleOpen} sx={{ backgroundColor: '#ffffff', color: '#a9a9a9' }}>タスクを作成</Button>      
       </Stack>
       <Modal
         open={open}
@@ -115,7 +187,7 @@ function FlowerShop() {
             </Select>
           </FormControl>
           <Stack spacing={2} direction="row" justifyContent="center">
-            <Button variant="contained" onClick={handleSubmit} sx={{ backgroundColor: '#ffffff', color: '#5e5e5e' }}>タスク作成</Button>        
+            <Button variant="contained" onClick={handleSubmit} sx={{ backgroundColor: '#ffffff', color: '#a9a9a9' }}>タスク作成</Button>        
           </Stack>
         </Box>
       </Modal>
@@ -124,3 +196,4 @@ function FlowerShop() {
 }
 
 export default FlowerShop;
+

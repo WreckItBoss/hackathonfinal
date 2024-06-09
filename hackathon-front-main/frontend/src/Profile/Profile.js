@@ -1,23 +1,49 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import background from './profile.jpg'; // 背景画像のパス
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import background from './profile.jpg';
 
 const Profile = () => {
-  // ここでユーザー情報を取得する
-  const userName = "User Name"; // 例：取得したユーザー名
-  const userEmail = "user@example.com"; // 例：取得したユーザーのメールアドレス
+  const [userInfo, setUserInfo] = useState({});
+  const navigate = useNavigate();
+
+  const fetchUserInfo = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('/api/v1/user/profile', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error('Error fetching user information:', error);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/sign-in');
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
 
   return (
     <ProfileContainer>
       <ProfileContent>
         <ProfileField>
-          <ProfileName>{userName}</ProfileName>
+          <ProfileName>{userInfo.name || "User Name"}</ProfileName>
           <Line />
         </ProfileField>
         <ProfileField>
-          <ProfileEmail>{userEmail}</ProfileEmail>
+          <ProfileEmail>{userInfo.email || "user@example.com"}</ProfileEmail>
           <Line />
         </ProfileField>
+        <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       </ProfileContent>
     </ProfileContainer>
   );
@@ -36,7 +62,7 @@ const ProfileContainer = styled.div`
 
 const ProfileContent = styled.div`
   text-align: center;
-  color: black; /* テキストを見やすくするために色を設定 */
+  color: black;
 `;
 
 const ProfileField = styled.div`
@@ -47,7 +73,7 @@ const ProfileField = styled.div`
 const ProfileName = styled.div`
   font-size: 20px;
   position: absolute;
-  top: -80px; /* 線の上に表示されるように調整 */
+  top: -80px;
   left: 50%;
   transform: translateX(-50%);
 `;
@@ -55,7 +81,7 @@ const ProfileName = styled.div`
 const ProfileEmail = styled.div`
   font-size: 18px;
   position: absolute;
-  top: 80px; /* 線の上に表示されるように調整 */
+  top: 80px;
   left: 50%;
   transform: translateX(-50%);
 `;
@@ -65,6 +91,17 @@ const Line = styled.div`
   height: 1px;
   background-color: black;
   margin: 0 auto;
+`;
+
+const LogoutButton = styled.button`
+  margin-top: 40px;
+  padding: 10px 20px;
+  background-color: #008080;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 `;
 
 export default Profile;
