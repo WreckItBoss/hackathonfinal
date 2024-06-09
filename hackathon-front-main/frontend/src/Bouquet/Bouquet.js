@@ -13,15 +13,9 @@ import yellowHealthy from './bouquetflowers/Yellow/yellowbouquet1.PNG';
 import yellowDying from './bouquetflowers/Yellow/yellowbouquet2.PNG';
 import yellowDead from './bouquetflowers/Yellow/yellowbouquet3.PNG';
 import balancedHealthy from './bouquetflowers/Balanced/balancebouquet1.PNG';
-<<<<<<< HEAD
 import balancedDying from './bouquetflowers/Balanced/balancebouquet3.PNG';
 import balancedDead from './bouquetflowers/Balanced/balancebouquet4.PNG';
-import { Button, Stack } from '@mui/material';
-=======
-import balancedDying from './bouquetflowers/Balanced/balancebouquet2.PNG';
-import balancedDead from './bouquetflowers/Balanced/balancebouquet3.PNG';
 import { Button } from '@mui/material'; // MUIのButtonをインポート
->>>>>>> origin/develop
 
 const Bouquet = () => {
   const [bouquetInfo, setBouquetInfo] = useState({});

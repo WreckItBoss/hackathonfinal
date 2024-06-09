@@ -13,12 +13,9 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "axios": "^1.7.2",
-<<<<<<< HEAD
     "body-parser": "^1.20.2",
     "build": "^0.1.4",
-=======
     "dayjs": "^1.11.11",
->>>>>>> origin/develop
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
