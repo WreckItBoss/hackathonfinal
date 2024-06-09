@@ -36,7 +36,6 @@ const Garden = () => {
   }, []);
 
   useEffect(() => {
-    console.log('HALLLLOOOOOOOOO'); 
     fetchRandomMessage();
   }, []);
 
