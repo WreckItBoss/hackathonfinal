@@ -2,37 +2,64 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Paper, TextField, Typography } from '@mui/material';
-import background from './signup-back.jpg'; // 新しい背景画像のパス
-
+import background from './signup-back.jpg';
+import axios from 'axios';
+import {toast} from 'react-hot-toast';
 const SignIn = () => {
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const [data, setData] = useState({
+    email:'',
+    password:'',
+  })
 
-  const handleOpen = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleSignIn = (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
-    setOpen(false);
-    navigate('/garden'); // ログインボタンでガーデン画面に遷移
+    const {email, password} = data
+    try {
+      // const {data} = await axios.post('/api/auth/login', {email,password})
+      const response = await axios.post('/api/auth/login', {email,password})
+      const { token } = response.data;
+      localStorage.setItem('token', token); // Store token in local storage
+      if(data.error){
+        toast.error(data.error);
+      }else{
+        setData({});
+        navigate('/flower-shop');
+      }
+    } catch (error) {
+      console.error('Error signing in:', error);
+      alert('Invalid email or password');
+    }
   };
 
   return (
-    <AppContainer>
-      <Button variant="contained" onClick={handleOpen} sx={{ bgcolor: '#ffffff', color: '#a9a9a9' }}>ログイン画面へ</Button>
-      <Modal open={open} onClose={handleOpen}>
-        <StyledPaper>
-          <form className='form' onSubmit={handleSignIn}>
-            <Typography variant={'h5'}>Sign In</Typography>
-            <TextField label="Email address" variant="standard" className="text" />
-            <TextField label="Password" variant="standard" className="text" type="password" />
-            <center><Button type="submit" className="login btn">Sign In</Button></center>
-            <center><Button className="signup btn">register</Button></center>
-            <center><Button variant="outlined" onClick={handleOpen}>close</Button></center>
-          </form>
-        </StyledPaper>
-      </Modal>
+<AppContainer>
+      <StyledPaper>
+        <form className='form' onSubmit={handleSignIn}>
+          <Typography variant={'h5'}>Sign In</Typography>
+          <TextField 
+            label="Email address" 
+            variant="standard" 
+            className="text" 
+            value={data.email}
+            onChange={(e) => setData({...data, email:e.target.value})}
+          />
+          <TextField 
+            label="Password" 
+            variant="standard" 
+            className="text" 
+            type="password"
+            value={data.password}
+            onChange={(e) => setData({...data, password:e.target.value})}
+          />
+          <center>
+            <Button type="submit" className="signup btn">Sign In</Button>
+          </center>
+        </form>
+        <center>
+          <Button variant="outlined" onClick={() => navigate('/Register')}>Register</Button>
+        </center>
+      </StyledPaper>
     </AppContainer>
   );
 };

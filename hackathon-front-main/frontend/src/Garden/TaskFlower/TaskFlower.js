@@ -23,7 +23,12 @@ const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
 
   const deleteTask = async () => {
     try {
-      await axios.delete(`/api/v1/task/${task._id}`);
+      const token = localStorage.getItem('token'); // Get the token from localStorage
+      await axios.delete(`/api/v1/task/${task._id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       console.log('タスクを削除しました');
       refreshTasks();
     } catch (error) {
@@ -34,12 +39,17 @@ const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
 
   const markAsCompleted = async () => {
     try {
+      const token = localStorage.getItem('token'); // Get the token from localStorage
       const flowerStatus = checkFlowerCondition(task);
       await axios.put(`/api/v1/task/complete/${task._id}`, {
         flowerStatus,
         taskType: task.taskType,
         completedAt: new Date(),
         isCompleted: true,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       console.log('タスクを完了しました');
       refreshTasks();
