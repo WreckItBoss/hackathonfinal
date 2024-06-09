@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
-import { Button, Modal, Paper, TextField, Typography } from '@mui/material';
+import { Button, Paper, TextField, Typography } from '@mui/material';
 import background from './signup-back.jpg';
 import axios from 'axios';
 import {toast} from 'react-hot-toast';
