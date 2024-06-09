@@ -120,8 +120,8 @@ const MessageBox = styled.div`
   max-width: 300px;
   text-align: center;
   position: absolute;
-  bottom: 130px;
-  right: 120px;
+  bottom: 70px;
+  right: 100px;
 `;
 
 const Content = styled.div`
