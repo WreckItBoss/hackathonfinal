@@ -132,7 +132,7 @@ const Tooltip = styled.div`
   padding: 5px 0;
   position: absolute;
   z-index: 1;
-  bottom: 125%;
+  bottom: 80%;
   left: 50%;
   margin-left: -100px;
   opacity: 1;
