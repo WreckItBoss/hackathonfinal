@@ -55,10 +55,10 @@ const SignIn = () => {
           <center>
             <Button type="submit" className="signup btn">Sign In</Button>
           </center>
+          <center>
+            <Button variant="outlined" onClick={() => navigate('/Register')}>Register</Button>
+          </center>
         </form>
-        <center>
-          <Button variant="outlined" onClick={() => navigate('/Register')}>Register</Button>
-        </center>
       </StyledPaper>
     </AppContainer>
   );
