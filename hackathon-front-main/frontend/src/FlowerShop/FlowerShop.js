@@ -119,7 +119,7 @@ function FlowerShop() {
           navigate('/login'); // Redirect to login page
         }
       } else if (error.response && error.response.data.message === 'Please complete the tasks you currently have before adding a new one.') {
-        alert('You already have 8 tasks. Let\'s complete one before adding more');
+        alert('すでにタスクが８個あります、他のタスクを終わらしてから追加しましょう');
       } else {
         alert('タスクの作成に失敗しました');
       }
