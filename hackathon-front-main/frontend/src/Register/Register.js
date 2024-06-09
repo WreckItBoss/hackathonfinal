@@ -26,6 +26,7 @@ const Register = () => {
         toast.error(responseData.error);
       } else {
         setData({});
+        alert('Successfully registered');
         navigate('/sign-in');
       }
     } catch (error) {
