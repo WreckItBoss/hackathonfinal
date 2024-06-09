@@ -33,6 +33,11 @@ const Bouquet = () => {
     }
   };
 
+  const toggleTooltip1 = () => {
+    console.log('Tooltip visible:', tooltipVisible);
+    setTooltipVisible(!tooltipVisible);
+  };
+
   const fetchCompletedTasks = async () => {
     try {
       const token = localStorage.getItem('token'); // Get the token from localStorage
@@ -162,7 +167,7 @@ const Bouquet = () => {
           <BouquetImage
             src={getBouquetImages(bouquetInfo.majorityType, bouquetInfo.bouquetCondition)}
             alt="Bouquet"
-            onClick={toggleTooltip}
+            onClick={toggleTooltip1}
           />
           {tooltipVisible && (
             <Tooltip>
