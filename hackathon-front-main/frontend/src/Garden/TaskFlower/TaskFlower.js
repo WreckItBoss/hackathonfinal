@@ -1,17 +1,23 @@
-
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import styled from '@emotion/styled';
 import axios from 'axios';
 
-import Tulip_Blooming from '../FlowersIMGFile/Tulip/Blooming.png';
-import Tulip_Half_Blooming from '../FlowersIMGFile/Tulip/Half-blooming.png';
-import Tulip_Withered from '../FlowersIMGFile/Tulip/Withered.png';
+import tulip_healthy from '../FlowersIMGFile/Tulip/tulip_alive.png';
+import tulip_dying from '../FlowersIMGFile/Tulip/tulip_dying.png';
+import tulip_dead from '../FlowersIMGFile/Tulip/tulip_dead.png';
+import poppy_healthy from '../FlowersIMGFile/Tulip/poppy_alive.png';
+import poppy_dying from '../FlowersIMGFile/Tulip/poppy_dying.png';
+import poppy_dead from '../FlowersIMGFile/Tulip/poppy_dead.png';
+import lily_healthy from '../FlowersIMGFile/Tulip/lily_alive.png';
+import lily_dying from '../FlowersIMGFile/Tulip/lily_dying.png';
+import lily_dead from '../FlowersIMGFile/Tulip/lily_dead.png';
 
 const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   const toggleTooltip = () => {
+    console.log('toggleTooltip');
     setTooltipVisible(!tooltipVisible);
   };
 
@@ -53,13 +59,33 @@ const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
     }
   };
 
-  const getFlowerImage = (flowerStatus) => {
-    if (flowerStatus === 'healthy') {
-      return Tulip_Blooming;
-    } else if (flowerStatus === 'dying') {
-      return Tulip_Half_Blooming;
-    } else {
-      return Tulip_Withered;
+  const getFlowerImage = (flowerStatus, taskType) => {
+    if (taskType === 'study') {
+      if (flowerStatus === 'healthy') {
+        return tulip_healthy;
+      } else if (flowerStatus === 'dying') {
+        return tulip_dying;
+      } else {
+        return tulip_dead;
+      }
+    } else if (taskType === 'housework') {
+      if (flowerStatus === 'healthy') {
+        return poppy_healthy;
+      } else if (flowerStatus === 'dying') {
+        return poppy_dying;
+      } else {
+        return poppy_dead;
+      }
+    } else if (taskType === 'activity') {
+      if (flowerStatus === 'healthy') {
+        return lily_healthy;
+      } else if (flowerStatus === 'dying') {
+        return lily_dying;
+      } else {
+        console.log(lily_dead)
+        return lily_dead;
+        
+      }
     }
   };
 
@@ -67,16 +93,15 @@ const TaskFlower = ({ task, index, checkFlowerCondition, refreshTasks }) => {
     <FlowerWrapper>
       <FlowerImage
         index={index}
-        src={getFlowerImage(checkFlowerCondition(task))}
-        alt={task.flower}
+        src={getFlowerImage(checkFlowerCondition(task), task.taskType)}
+        alt={'flower'}
         onClick={toggleTooltip}
       />
       {tooltipVisible && (
         <Tooltip>
           <p>タイトル：{task.title}</p>
           <p>内容：{task.description}</p>
-          {/* <p>期限：{task.dueDate}</p> */}
-          <p>期限：{new Date(task.dueDate).toLocaleString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</p>
+          <p>期限：{task.dueDate}</p>
           <Button variant="contained" color="primary" onClick={markAsCompleted}>完了</Button>
           <Button variant="contained" color="secondary" onClick={deleteTask}>削除</Button>
         </Tooltip>
@@ -100,8 +125,8 @@ const FlowerImage = styled.img`
 const Tooltip = styled.div`
   visibility: visible;
   width: 200px;
-  background-color: black;
-  color: #fff;
+  background-color: white;
+  color: #5e5e5e;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
