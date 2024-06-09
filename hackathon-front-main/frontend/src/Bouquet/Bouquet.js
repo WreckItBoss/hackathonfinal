@@ -24,6 +24,13 @@ const Bouquet = () => {
   const toggleTooltip = () => {
     console.log('Tooltip visible:', tooltipVisible);
     setTooltipVisible(!tooltipVisible);
+    const randomNumber = Math.random();
+    if (randomNumber < 0.5){
+      window.location.href = 'https://www.naist.jp/';
+    }
+    else{
+      window.location.href = 'https://www.doshisha.ac.jp/';
+    }
   };
 
   const fetchCompletedTasks = async () => {

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import background from './garden_back.jpg';
@@ -6,6 +7,17 @@ import TaskFlower from './TaskFlower/TaskFlower';
 
 const Garden = () => {
   const [tasks, setTasks] = useState([]);
+  const [message, setMessage] = useState('');
+
+  const fetchRandomMessage = async () => {
+    try {
+      const response = await axios.get('/api/v2/random-message');
+      console.log('Response from /api/random-message:', response);
+      setMessage(response.data.message);
+    } catch (error) {
+      console.error('Error fetching random message:', error);
+    }
+  };
 
   const fetchTasks = async () => {
     const data = await getAllTasks();
@@ -17,6 +29,10 @@ const Garden = () => {
     fetchTasks();
     const interval = setInterval(fetchTasks, 5000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    fetchRandomMessage();
   }, []);
 
   const getAllTasks = async () => {
@@ -69,6 +85,9 @@ const Garden = () => {
   return (
     <GardenContainer>
       <Content>
+      <MessageBox>
+        {message}
+      </MessageBox>
         {tasks.map((task, index) => (
           <TaskFlower
             key={task._id}
@@ -92,6 +111,17 @@ const GardenContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const MessageBox = styled.div`
+  background: none;
+  color: black;
+  padding: 20px;
+  max-width: 300px;
+  text-align: center;
+  position: absolute;
+  bottom: 130px;
+  right: 120px;
 `;
 
 const Content = styled.div`
